@@ -13,8 +13,10 @@ import java.net.Socket;
 
 
 @AllArgsConstructor
-public class SimpleRPCRPCServer implements RpcServer {
+public class SimpleRpcServer implements RpcServer {
+
     private ServiceProvider serviceProvide;
+
     @Override
     public void start(int port) {
         try {

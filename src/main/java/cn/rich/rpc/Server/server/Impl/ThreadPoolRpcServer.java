@@ -16,20 +16,20 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
-public class ThreadPoolRPCRPCServer implements RpcServer {
+public class ThreadPoolRpcServer implements RpcServer {
     private final ThreadPoolExecutor threadPool;
     private ServiceProvider serviceProvider;
 
-    public ThreadPoolRPCRPCServer(ServiceProvider serviceProvider){
+    public ThreadPoolRpcServer(ServiceProvider serviceProvider){
         threadPool=new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
                 1000,60, TimeUnit.SECONDS,new ArrayBlockingQueue<>(100));
         this.serviceProvider= serviceProvider;
     }
-    public ThreadPoolRPCRPCServer(ServiceProvider serviceProvider, int corePoolSize,
-                                  int maximumPoolSize,
-                                  long keepAliveTime,
-                                  TimeUnit unit,
-                                  BlockingQueue<Runnable> workQueue){
+    public ThreadPoolRpcServer(ServiceProvider serviceProvider, int corePoolSize,
+                               int maximumPoolSize,
+                               long keepAliveTime,
+                               TimeUnit unit,
+                               BlockingQueue<Runnable> workQueue){
 
         threadPool = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
         this.serviceProvider = serviceProvider;
