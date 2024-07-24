@@ -2,6 +2,8 @@ package cn.rich.rpc.Client.client.Impl;
 
 import cn.rich.rpc.Client.client.RpcClient;
 import cn.rich.rpc.Client.netty.nettyInitializer.NettyClientInitializer;
+import cn.rich.rpc.Client.serviceCenter.ServiceCenter;
+import cn.rich.rpc.Client.serviceCenter.ZKServiceCenter;
 import cn.rich.rpc.Common.Message.RpcRequest;
 import cn.rich.rpc.Common.Message.RpcResponse;
 import io.netty.bootstrap.Bootstrap;
@@ -15,6 +17,7 @@ import io.netty.util.AttributeKey;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -26,14 +29,12 @@ import java.net.Socket;
 public class NettyRpcClient implements RpcClient{
 
     //这里负责底层与服务端的通信，发送request，返回response
-    private final String host;
-    private final int port;
+    private ServiceCenter serviceCenter;
     private static final Bootstrap bootstrap;
     private static final EventLoopGroup eventLoopGroup;
 
-    public NettyRpcClient(String host, int port){
-        this.host=host;
-        this.port=port;
+    public NettyRpcClient(){
+        this.serviceCenter = new ZKServiceCenter();
     }
 
     //netty客户端初始化
@@ -46,7 +47,11 @@ public class NettyRpcClient implements RpcClient{
     }
 
     @Override
-    public RpcResponse sendRequest(RpcRequest request){
+    public RpcResponse sendRequest(RpcRequest request) {
+        //从注册中心获得地址
+        InetSocketAddress address = serviceCenter.serviceDiscovery(request.getInterfaceName());
+        String host = address.getHostName();
+        int port = address.getPort();
         try {
             //创建一个channelFuture对象，代表这一个操作事件，sync方法表示堵塞直到connect完成
             ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
