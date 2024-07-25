@@ -28,6 +28,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest request) throws Exception {
         //接收request，读取并调用服务
         RpcResponse response = getResponse(request);
+//        System.out.println(request);
         ctx.writeAndFlush(response);
         ctx.close();
     }
