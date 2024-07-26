@@ -16,7 +16,6 @@ public class ServiceCache {
         if (cache.containsKey(serviceName)) {
             List<String> addressList = cache.get(serviceName);
             addressList.add(address);
-            System.out.println("将name为" + serviceName + "和地址为" + address + "的服务添加到本地缓存中");
         } else {
             List<String> addressList = new ArrayList<>();
             addressList.add(address);

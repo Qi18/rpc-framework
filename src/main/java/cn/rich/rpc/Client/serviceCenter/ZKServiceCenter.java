@@ -2,15 +2,19 @@ package cn.rich.rpc.Client.serviceCenter;
 
 import cn.rich.rpc.Client.cache.ServiceCache;
 import cn.rich.rpc.Client.serviceCenter.ZkWatcher.watchZK;
+import cn.rich.rpc.Client.serviceCenter.balance.impl.ConsistencyHashBalance;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.List;
 
-
+@Slf4j
 public class ZKServiceCenter implements ServiceCenter{
 
     // curator 提供的zookeeper客户端
@@ -18,6 +22,8 @@ public class ZKServiceCenter implements ServiceCenter{
 
     //zookeeper根路径节点
     private static final String ROOT_PATH = "MyRPC";
+
+    private static final String RETRY = "CanRetry";
 
     //serviceCache
     private ServiceCache cache;
@@ -47,19 +53,39 @@ public class ZKServiceCenter implements ServiceCenter{
     public InetSocketAddress serviceDiscovery(String serviceName) {
         try {
             //先从本地缓存中找
-            System.out.println(cache.cache);
-            List<String> serviceList = cache.getServiceFromCache(serviceName);
-            if(serviceList == null) {
-                serviceList = client.getChildren().forPath("/" + serviceName);
+            System.out.println("缓存值:" + ServiceCache.cache);
+            List<String> addressList = cache.getServiceFromCache(serviceName);
+
+            if (addressList == null) {
+                addressList = client.getChildren().forPath("/" + serviceName);
             }
-            // 这里默认用的第一个，后面加负载均衡
-            String string = serviceList.get(0);
-            return parseAddress(string);
+            System.out.println("addressList:" + addressList);
+            String address = new ConsistencyHashBalance().balance(addressList);
+            return parseAddress(address);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    @Override
+    public boolean checkRetry(String serviceName) {
+        boolean canRetry =false;
+        try {
+            List<String> serviceList = client.getChildren().forPath("/" + RETRY);
+            for(String s : serviceList){
+                //如果列表中有该服务
+                if(s.equals(serviceName)){
+                    System.out.println("服务" + serviceName + "在白名单上，可进行重试");
+                    canRetry=true;
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return canRetry;
+    }
+
 
     // 地址 -> XXX.XXX.XXX.XXX:port 字符串
     private String getServiceAddress(InetSocketAddress serverAddress) {

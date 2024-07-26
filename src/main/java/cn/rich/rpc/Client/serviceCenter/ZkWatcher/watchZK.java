@@ -1,12 +1,13 @@
 package cn.rich.rpc.Client.serviceCenter.ZkWatcher;
 
 import cn.rich.rpc.Client.cache.ServiceCache;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.CuratorCache;
 import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
 
-
+@Slf4j
 public class watchZK {
 
     // curator 提供的zookeeper客户端
@@ -41,6 +42,7 @@ public class watchZK {
                             String address = pathList[2];
                             //将新注册的服务加入到本地缓存中
                             cache.addServiceToCache(serviceName,address);
+                            log.debug("将name为{}和地址为{}的服务添加到本地缓存中", serviceName, address);
                         }
                         break;
                     case "NODE_CHANGED": // 节点更新
