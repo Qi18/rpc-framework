@@ -1,7 +1,10 @@
 package cn.rich.rpc.Server.provider;
 
+import cn.rich.rpc.Server.ratelimit.RateLimit;
+import cn.rich.rpc.Server.ratelimit.provider.RateLimitProvider;
 import cn.rich.rpc.Server.serviceRegister.ServiceRegister;
 import cn.rich.rpc.Server.serviceRegister.impl.ZKServiceRegister;
+import lombok.Getter;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
@@ -9,18 +12,25 @@ import java.util.Map;
 
 
 //本地服务存放器
+@Getter
 public class ServiceProvider {
     //集合中存放服务的实例
-    private Map<String,Object> interfaceProvider;
+    private Map<String, Object> interfaceProvider;
+
     private String host;
+
     private int port;
+
     private ServiceRegister serviceRegister;
+
+    private RateLimitProvider rateLimitProvider;
 
     public ServiceProvider(String host, int port){
         this.host = host;
         this.port = port;
         this.interfaceProvider = new HashMap<>();
         this.serviceRegister = new ZKServiceRegister();
+        this.rateLimitProvider = new RateLimitProvider();
     }
 
     //本地注册服务
@@ -41,4 +51,5 @@ public class ServiceProvider {
     public Object getService(String interfaceName){
         return interfaceProvider.get(interfaceName);
     }
+
 }

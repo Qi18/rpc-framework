@@ -60,7 +60,9 @@ public class ZKServiceCenter implements ServiceCenter{
                 addressList = client.getChildren().forPath("/" + serviceName);
             }
             System.out.println("addressList:" + addressList);
+            System.out.println("进行负载均衡");
             String address = new ConsistencyHashBalance().balance(addressList);
+            System.out.println("负载均衡后的地址:" + address);
             return parseAddress(address);
         } catch (Exception e) {
             e.printStackTrace();

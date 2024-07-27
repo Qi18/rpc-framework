@@ -28,4 +28,8 @@ public class RpcResponse implements Serializable {
     public static RpcResponse fail(){
         return RpcResponse.builder().code(500).message("服务器发生错误").build();
     }
+
+    public static RpcResponse fail(String message){
+        return RpcResponse.builder().code(500).message(message).build();
+    }
 }
