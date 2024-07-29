@@ -4,13 +4,12 @@ package cn.rich.rpc.Client.proxy;
 import cn.rich.rpc.Client.circuitBreaker.CircuitBreaker;
 import cn.rich.rpc.Client.circuitBreaker.CircuitBreakerProvider;
 import cn.rich.rpc.Client.client.Impl.NettyRpcClient;
-import cn.rich.rpc.Client.client.Impl.SocketRpcClient;
 import cn.rich.rpc.Client.client.RpcClient;
 import cn.rich.rpc.Client.retry.GuavaRetry;
 import cn.rich.rpc.Client.serviceCenter.ServiceCenter;
 import cn.rich.rpc.Client.serviceCenter.ZKServiceCenter;
-import cn.rich.rpc.Common.Message.RpcRequest;
-import cn.rich.rpc.Common.Message.RpcResponse;
+import cn.rich.rpc.Common.message.RpcRequest;
+import cn.rich.rpc.Common.message.RpcResponse;
 import lombok.AllArgsConstructor;
 
 import java.lang.reflect.InvocationHandler;

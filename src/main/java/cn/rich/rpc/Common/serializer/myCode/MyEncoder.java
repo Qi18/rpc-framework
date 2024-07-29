@@ -1,8 +1,8 @@
 package cn.rich.rpc.Common.serializer.myCode;
 
-import cn.rich.rpc.Common.Message.MessageType;
-import cn.rich.rpc.Common.Message.RpcRequest;
-import cn.rich.rpc.Common.Message.RpcResponse;
+import cn.rich.rpc.Common.message.MessageType;
+import cn.rich.rpc.Common.message.RpcRequest;
+import cn.rich.rpc.Common.message.RpcResponse;
 import cn.rich.rpc.Common.serializer.mySerializer.Serializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

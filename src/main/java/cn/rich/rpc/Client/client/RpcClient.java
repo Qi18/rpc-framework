@@ -1,7 +1,7 @@
 package cn.rich.rpc.Client.client;
 
-import cn.rich.rpc.Common.Message.RpcRequest;
-import cn.rich.rpc.Common.Message.RpcResponse;
+import cn.rich.rpc.Common.message.RpcRequest;
+import cn.rich.rpc.Common.message.RpcResponse;
 
 /**
  * @author rich

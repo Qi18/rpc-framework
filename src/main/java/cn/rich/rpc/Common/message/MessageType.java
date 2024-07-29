@@ -1,4 +1,4 @@
-package cn.rich.rpc.Common.Message;
+package cn.rich.rpc.Common.message;
 
 import lombok.AllArgsConstructor;
 

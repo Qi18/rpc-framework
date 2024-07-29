@@ -2,8 +2,8 @@ package cn.rich.rpc.Client.client.Impl;
 
 
 import cn.rich.rpc.Client.client.RpcClient;
-import cn.rich.rpc.Common.Message.RpcRequest;
-import cn.rich.rpc.Common.Message.RpcResponse;
+import cn.rich.rpc.Common.message.RpcRequest;
+import cn.rich.rpc.Common.message.RpcResponse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

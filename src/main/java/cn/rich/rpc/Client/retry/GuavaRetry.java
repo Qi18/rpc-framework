@@ -1,8 +1,8 @@
 package cn.rich.rpc.Client.retry;
 
 import cn.rich.rpc.Client.client.RpcClient;
-import cn.rich.rpc.Common.Message.RpcRequest;
-import cn.rich.rpc.Common.Message.RpcResponse;
+import cn.rich.rpc.Common.message.RpcRequest;
+import cn.rich.rpc.Common.message.RpcResponse;
 import com.github.rholder.retry.*;
 
 import java.util.Objects;
