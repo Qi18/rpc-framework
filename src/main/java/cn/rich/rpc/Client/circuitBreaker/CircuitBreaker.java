@@ -1,11 +1,14 @@
 package cn.rich.rpc.Client.circuitBreaker;
 
 
+import lombok.Getter;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CircuitBreaker {
 
     //当前状态
+    @Getter
     private CircuitBreakerState state = CircuitBreakerState.CLOSED;
 
     private AtomicInteger failureCount = new AtomicInteger(0);
@@ -26,7 +29,7 @@ public class CircuitBreaker {
     //上一次失败时间
     private long lastFailureTime = 0;
 
-    public CircuitBreaker(int failureThreshold, double halfOpenSuccessRate,long retryTimePeriod) {
+    public CircuitBreaker(int failureThreshold, double halfOpenSuccessRate, long retryTimePeriod) {
         this.failureThreshold = failureThreshold;
         this.halfOpenSuccessRate = halfOpenSuccessRate;
         this.retryTimePeriod = retryTimePeriod;
@@ -51,6 +54,7 @@ public class CircuitBreaker {
                 return true;
         }
     }
+
     //记录成功
     public synchronized void recordSuccess() {
         if (state == CircuitBreakerState.HALF_OPEN) {
@@ -63,8 +67,10 @@ public class CircuitBreaker {
             resetCounts();
         }
     }
+
     //记录失败
     public synchronized void recordFailure() {
+        failureCount.incrementAndGet();
         failureCount.incrementAndGet();
         lastFailureTime = System.currentTimeMillis();
         if (state == CircuitBreakerState.HALF_OPEN) {
@@ -74,6 +80,7 @@ public class CircuitBreaker {
             state = CircuitBreakerState.OPEN;
         }
     }
+
     //重置次数
     private void resetCounts() {
         failureCount.set(0);
@@ -81,9 +88,6 @@ public class CircuitBreaker {
         requestCount.set(0);
     }
 
-    public CircuitBreakerState getState() {
-        return state;
-    }
 }
 
 enum CircuitBreakerState {

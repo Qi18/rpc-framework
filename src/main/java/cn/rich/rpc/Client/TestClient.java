@@ -17,6 +17,13 @@ public class TestClient {
                     User user = proxy.getUserByUserId(1);
                     System.out.println("从服务端得到的user=" + user.toString());
                 }).start();
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                User user = proxy.getUserByUserId(1);
+                System.out.println("从服务端得到的user=" + user.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
